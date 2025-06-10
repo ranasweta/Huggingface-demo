@@ -3,6 +3,73 @@
 This project provides a complete and robust pipeline for detecting and recognizing vehicle license plates from images. It leverages a custom-trained **YOLOv5** model for high-accuracy object detection and the **Tesseract OCR** engine for extracting alphanumeric text, all tied together with a sophisticated image preprocessing pipeline.
 
 ---
+## 📊 Dataset Used
+
+This project uses a publicly available license plate dataset hosted on **Roboflow Universe**:
+
+🔗 **[License Plate Recognition Dataset – Roboflow](https://universe.roboflow.com/roboflow-universe-projects/license-plate-recognition-rxg4e)**
+
+The dataset includes a diverse set of images covering:
+
+- Various vehicle types
+- Different plate formats
+- Real-world lighting conditions
+- Multiple environments (day/night, urban/highway)
+
+> The dataset is pre-labeled and optimized for object detection tasks.
+
+---
+
+## ⚙️ Approach Summary
+
+The project pipeline is composed of two main phases:
+
+### 1️⃣ Model Training (YOLOv5 on Google Colab)
+
+The YOLOv5 model was trained using a Google Colab notebook for quick iteration and GPU acceleration:
+
+📔 **[Colab Notebook for Training YOLOv5](https://colab.research.google.com/drive/1w4VQbMLt_2nOajkmD7rzkdrMUmCzTLC6?usp=sharing)**
+
+Training Details:
+
+- Model: `YOLOv5s` (small variant for speed and performance balance)
+- Epochs: 50+
+- Augmentations: Mosaic, HSV shifts, scaling
+- Validation Split: 20%
+- Exported as `best.pt` for inference
+
+---
+
+### 2️⃣ Detection + OCR Pipeline
+
+Once trained, the model is used for inference as follows:
+
+#### 🧠 Detection (YOLOv5)
+
+- Runs on input images to localize license plates using bounding boxes.
+- Outputs plate coordinates and confidence scores.
+
+#### 🔤 OCR (Tesseract)
+
+- Cropped plate regions are preprocessed:
+  - Grayscale
+  - Adaptive Thresholding
+  - Noise Reduction
+- Processed image is passed to **Tesseract OCR** to extract text.
+- Post-OCR filtering removes invalid characters and normalizes the format.
+
+---
+
+### 🛠️ Deployment
+
+- Deployed to **Hugging Face Spaces** using **Gradio**.
+- Accepts image input and returns:
+  - Detected image with bounding box
+  - Recognized license plate number
+
+> Bonus: Includes optional script for real-time webcam-based detection.
+
+---
 
 ## ✨ Live Demo on Hugging Face
 
@@ -47,13 +114,6 @@ While the Hugging Face demo supports image uploads, the full project also runs o
 - Git
 - **Tesseract OCR** (must be installed separately):
 
-```bash
-# On Ubuntu/Debian
-sudo apt install tesseract-ocr
-
-# On Mac (with Homebrew)
-brew install tesseract
-```
 ## 🛠️ Setup & Installation
 
 Follow the steps below to set up the project on your local machine:
