@@ -1,3 +1,5 @@
+# app.py - Final Version for Windows-Trained Model
+
 import gradio as gr
 import torch
 import cv2
@@ -5,67 +7,80 @@ import pytesseract
 import re
 import numpy as np
 
+# ==============================================================================
+#  THE PATHLIB PATCH FOR WINDOWS-TRAINED MODELS
+# ==============================================================================
+# This block fixes the "cannot instantiate 'WindowsPath' on your system" error.
+# It MUST be placed BEFORE `torch.hub.load`.
+import pathlib
+import platform
+# Temporarily patch pathlib if we are on a Linux system (like Hugging Face)
+if platform.system() == 'Linux':
+    pathlib.WindowsPath = pathlib.PosixPath
+# ==============================================================================
+
+
 # --- Configuration ---
 print("Loading YOLOv5 model...")
+# Now, load the model. The patch above will prevent it from crashing.
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
 model.conf = 0.25
 print("Model loaded successfully.")
+
 
 # --- Helper Functions ---
 def clean_text(text):
     return re.sub(r'[^A-Z0-9]', '', text).strip()
 
 def preprocess_for_ocr(crop):
-    gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+    # Convert to BGR as OpenCV functions expect this format
+    crop_bgr = cv2.cvtColor(crop, cv2.COLOR_RGB2BGR)
+    gray = cv2.cvtColor(crop_bgr, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (3, 3), 0)
     adaptive_thresh = cv2.adaptiveThreshold(
         blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY, 19 , 9
+        cv2.THRESH_BINARY, 15, 7
     )
     return adaptive_thresh
 
 # --- Main Processing Function for Gradio ---
-def recognize_license_plate(input_image):
-    if input_image is None:
+def recognize_license_plate(input_image_rgb):
+    if input_image_rgb is None:
         return None, "Please upload an image."
 
-    # Tesseract is pre-installed on Hugging Face Spaces, but we tell pytesseract where it is.
+    # Tell pytesseract where the tesseract executable is on the Hugging Face server
     pytesseract.pytesseract.tesseract_cmd = r'tesseract'
 
-    # Perform detection on the input image (which is RGB from Gradio)
-    results = model(input_image)
+    # Perform detection on the RGB image from Gradio
+    results = model(input_image_rgb)
     
-    # Render the results, which gives us an image with boxes drawn on it (in BGR format)
-    # results.render() returns a list of images, we take the first one.
+    # Render() draws boxes and returns a BGR image with boxes
     image_with_boxes_bgr = results.render()[0]
     
-    # Convert this BGR image back to RGB for correct display in Gradio
+    # Convert the final display image back to RGB for Gradio
     processed_image_rgb = cv2.cvtColor(image_with_boxes_bgr, cv2.COLOR_BGR2RGB)
 
-    # Now, let's get the text
+    # Now, get the text from the detected region
     detections_df = results.pandas().xyxy[0]
     recognized_text = "No license plate detected."
 
     if len(detections_df) > 0:
-        # Use the original RGB input image for cropping to avoid color issues
         row = detections_df.iloc[0]
         xmin, ymin, xmax, ymax = int(row['xmin']), int(row['ymin']), int(row['xmax']), int(row['ymax'])
         
-        # Crop from the original input image
-        plate_crop = input_image[ymin:ymax, xmin:xmax]
-
-        # Since OpenCV functions expect BGR, convert the crop for preprocessing
-        plate_crop_bgr = cv2.cvtColor(plate_crop, cv2.COLOR_RGB2BGR)
-
-        preprocessed_crop = preprocess_for_ocr(plate_crop_bgr)
+        # Crop from the original input image (which is RGB)
+        plate_crop_rgb = input_image_rgb[ymin:ymax, xmin:xmax]
+        
+        preprocessed_crop = preprocess_for_ocr(plate_crop_rgb)
         
         custom_config = r'--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
         plate_text_raw = pytesseract.image_to_string(preprocessed_crop, config=custom_config)
         plate_text = clean_text(plate_text_raw)
-
+        
         recognized_text = plate_text if plate_text else "Could not read text from plate."
         
-        # Update the text on our final processed image
+        # Update the text on our final processed image (which is already RGB)
+        # Note: cv2.putText modifies the image in-place
         cv2.putText(processed_image_rgb, recognized_text, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
 
     return processed_image_rgb, recognized_text
