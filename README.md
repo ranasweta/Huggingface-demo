@@ -9,7 +9,7 @@ This project provides a complete and robust pipeline for detecting and recognizi
 Experience the power of this model firsthand! I have deployed a user-friendly web interface on Hugging Face Spaces where you can upload your own images and see the detection results instantly.
 
 ➡️ **[Click here to try the Live Demo](https://ranasweta-license-plate-recognition-demo.hf.space/?logs=container&__theme=system&deep_link=5XQgD5aHYlg)**  
-*(Replace with your actual Hugging Face Space link)*
+
 
 (![alt text](https://github.com/ranasweta/Huggingface-demo/blob/main/Demo_online.png))
 
