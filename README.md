@@ -31,7 +31,7 @@ Below is an example of the system identifying and drawing a bounding box around 
 
 | Input Image | Detection Result |
 |-------------|------------------|
-| ![Input Image](assets/input.png) | ![Output Image](assets/output.png) |
+| ![Input Image](https://github.com/ranasweta/Huggingface-demo/blob/main/image.png) | ![Output Image](https://github.com/ranasweta/Huggingface-demo/blob/main/output.png) |
 
 📝 *To add screenshots:*
 1. Create a folder named `assets` in your project root.
