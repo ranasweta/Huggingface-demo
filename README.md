@@ -33,10 +33,27 @@ The YOLOv5 model was trained using a Google Colab notebook for quick iteration a
 Training Details:
 
 - Model: `YOLOv5s` (small variant for speed and performance balance)
-- Epochs: 50+
+- Epochs: 50
 - Augmentations: Mosaic, HSV shifts, scaling
 - Validation Split: 20%
 - Exported as `best.pt` for inference
+---
+### 📈 Model Performance Summary
+
+- **Model:** YOLOv5s  
+- **Total Layers:** 157  
+- **Training Images:** 2048  
+- **Validation Instances:** 2195
+
+| Metric     | Score   |
+|------------|---------|
+| Precision  | 0.980   |
+| Recall     | 0.955   |
+| mAP@0.5    | 0.973   |
+| mAP@0.5:0.95 | 0.700 |
+
+> 💯 These metrics reflect high accuracy and generalization on real-world license plate data.
+
 
 ---
 
@@ -179,7 +196,7 @@ matplotlib
 ](mailto:ranasweta2005@gmail.com
 )  
 🤗 Hugging Face: [ranasweta
-](https://huggingface.co/spaces/ranasweta
+](https://huggingface.co/ranasweta
 )  
 🔗 Live Demo: [License Plate Recognition Demo](https://huggingface.co/spaces/ranasweta/License-Plate-Recognition-Demo)
 
