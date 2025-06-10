@@ -20,7 +20,7 @@ def preprocess_for_ocr(crop):
     blurred = cv2.GaussianBlur(gray, (3, 3), 0)
     adaptive_thresh = cv2.adaptiveThreshold(
         blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY, 15, 7
+        cv2.THRESH_BINARY, 19 , 9
     )
     return adaptive_thresh
 
