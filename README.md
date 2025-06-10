@@ -10,6 +10,8 @@ Experience the power of this model firsthand! I have deployed a user-friendly we
 
 ➡️ **[Click here to try the Live Demo](https://ranasweta-license-plate-recognition-demo.hf.space/?logs=container&__theme=system&deep_link=5XQgD5aHYlg)**  
 *(Replace with your actual Hugging Face Space link)*
+![Alt text](Huggingface-demo\Demo_online.png)
+
 
 ---
 
