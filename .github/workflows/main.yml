@@ -15,5 +15,5 @@ jobs:
           lfs: true
       - name: Push to hub
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://ranasweta:$HF_TOKEN@huggingface.co/spaces/ranasweta/License-Plate-Recognition-Demo main
+          HF_TOKEN: ${{ secrets.HF_DEMO }}
+        run: git push https://ranasweta:$HF_DEMO@huggingface.co/spaces/ranasweta/License-Plate-Recognition-Demo main
