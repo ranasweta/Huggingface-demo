@@ -33,10 +33,7 @@ Below is an example of the system identifying and drawing a bounding box around 
 |-------------|------------------|
 | ![Input Image](https://github.com/ranasweta/Huggingface-demo/blob/main/image.png) | ![Output Image](https://github.com/ranasweta/Huggingface-demo/blob/main/output.png) |
 
-📝 *To add screenshots:*
-1. Create a folder named `assets` in your project root.
-2. Save your screenshots as `input.png` and `output.png` inside `assets`.
-3. They'll render automatically here once pushed to GitHub.
+
 
 ---
 
@@ -56,3 +53,75 @@ sudo apt install tesseract-ocr
 
 # On Mac (with Homebrew)
 brew install tesseract
+```
+## 🛠️ Setup & Installation
+
+Follow the steps below to set up the project on your local machine:
+
+---
+
+### 📦 1. Clone the Repository
+
+```bash
+git clone https://github.com/ranasweta/License_Detector_Live
+
+cd License_Detector_Live
+```
+
+### 🧪 2. Create and Activate a Virtual Environment
+
+```bash
+# For Windows
+python -m venv venv
+.\venv\Scripts\activate
+```
+```bash
+# For macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+### 📦 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+
+```
+---
+## 3. Running the Application
+### 3.1. Running the Application with Webcam Input
+```bash
+python run_on_webcam.py
+```
+### 3.2. Running the Application with image input
+```bash
+python run_on_image.py
+
+```
+##📜 Dependencies (requirements.txt)
+```bash
+torch
+opencv-python
+opencv-python-headless
+pytesseract
+ultralytics
+numpy
+gradio
+seaborn
+pandas
+matplotlib
+```
+---
+## 📞 Contact
+
+**Rana Sweta**  
+📧 Email: [
+    ranasweta2005@gmail.com
+](mailto:ranasweta2005@gmail.com
+)  
+🤗 Hugging Face: [ranasweta
+](https://huggingface.co/spaces/ranasweta
+)  
+🔗 Live Demo: [License Plate Recognition Demo](https://huggingface.co/spaces/ranasweta/License-Plate-Recognition-Demo)
+
+
+
